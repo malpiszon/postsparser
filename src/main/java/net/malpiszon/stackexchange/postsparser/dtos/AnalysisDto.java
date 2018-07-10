@@ -4,22 +4,19 @@ import java.time.LocalDateTime;
 
 public class AnalysisDto {
 
-    private LocalDateTime date;
-    private String details;
+    private final LocalDateTime date;
+    private final AnalysisDetailsDto details;
+
+    public AnalysisDto(AnalysisDetailsDto details) {
+        this.date = LocalDateTime.now();
+        this.details = details;
+    }
 
     public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(LocalDateTime date) {
-        this.date = date;
-    }
-
-    public String getDetails() {
+    public AnalysisDetailsDto getDetails() {
         return details;
-    }
-
-    public void setDetails(String details) {
-        this.details = details;
     }
 }

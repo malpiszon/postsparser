@@ -12,13 +12,14 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.time.LocalDateTime;
 import java.util.concurrent.CompletableFuture;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import net.malpiszon.stackexchange.postsparser.dtos.AnalysisDetailsDto;
 import net.malpiszon.stackexchange.postsparser.dtos.AnalysisDto;
 import net.malpiszon.stackexchange.postsparser.dtos.AnalyzeRequestDto;
 import net.malpiszon.stackexchange.postsparser.services.AnalyzeService;
-import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
@@ -35,6 +36,8 @@ import org.springframework.test.web.servlet.MvcResult;
 public class AnalyzeControllerTest {
 
     private static final String VALID_URL = "http://test.pl/posts.xml";
+    private static final LocalDateTime START_DATE = LocalDateTime.now().minusDays(1);
+    private static final LocalDateTime END_DATE = LocalDateTime.now().minusMinutes(1);
 
     @Autowired
     private MockMvc mockMvc;
@@ -96,10 +99,11 @@ public class AnalyzeControllerTest {
         analyzeRequestDto.setUrl(VALID_URL);
         String contentAsJson = mapper.writeValueAsString(analyzeRequestDto);
 
-        AnalysisDto analysisDto = new AnalysisDto();
+        AnalysisDetailsDto analysisDetailsDto = new AnalysisDetailsDto(START_DATE, END_DATE, 1, 1);
+        AnalysisDto analysisDto = new AnalysisDto(analysisDetailsDto);
         CompletableFuture<AnalysisDto> result = CompletableFuture.completedFuture(analysisDto);
 
-        when(analyzeService.analyze(any())).thenReturn(result);
+        when(analyzeService.analyze(any(AnalyzeRequestDto.class))).thenReturn(result);
 
         MvcResult performResult = mockMvc.perform(post("/analyze")
                 .content(contentAsJson)
@@ -109,8 +113,8 @@ public class AnalyzeControllerTest {
 
         mockMvc.perform(asyncDispatch(performResult))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$['date']", is(Matchers.nullValue())))
-                .andExpect(jsonPath("$['details']", is(Matchers.nullValue())));
+                .andExpect(jsonPath("$['details']['totalPosts']", is(1)))
+                .andExpect(jsonPath("$['details']['avgScore']", is(1.0)));
 
         verifyServiceCalledWithValidUrlOnce();
     }
