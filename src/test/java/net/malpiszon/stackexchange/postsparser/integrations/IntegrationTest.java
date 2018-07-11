@@ -3,6 +3,7 @@ package net.malpiszon.stackexchange.postsparser.integrations;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import edu.umd.cs.findbugs.annotations.SuppressWarnings;
 import net.malpiszon.stackexchange.postsparser.dtos.AnalyzeRequestDto;
 import org.junit.Rule;
 import org.mockserver.client.MockServerClient;
@@ -14,6 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 @AutoConfigureMockMvc
+@SuppressWarnings(value = {"UWF_UNWRITTEN_FIELD", "URF_UNREAD_PUBLIC_OR_PROTECTED_FIELD"})
 public abstract class IntegrationTest {
 
     @Rule
