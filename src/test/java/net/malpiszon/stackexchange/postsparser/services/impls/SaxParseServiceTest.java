@@ -12,6 +12,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import javax.xml.parsers.SAXParser;
 
+import net.malpiszon.stackexchange.postsparser.ServiceConfig;
 import net.malpiszon.stackexchange.postsparser.parser.AnalysisResult;
 import net.malpiszon.stackexchange.postsparser.parser.PostsHandler;
 import net.malpiszon.stackexchange.postsparser.services.ParseService;
@@ -27,7 +28,6 @@ import org.xml.sax.SAXException;
 
 @RunWith(SpringRunner.class)
 public class SaxParseServiceTest {
-
     @Rule
     public final ExpectedException exception = ExpectedException.none();
 
@@ -43,7 +43,8 @@ public class SaxParseServiceTest {
 
     @Before
     public void setUp() throws Exception {
-        parseService = new SaxParseService(saxParser, postsHandler);
+        ServiceConfig config = new ServiceConfig();
+        parseService = new SaxParseService(saxParser, postsHandler, config);
     }
 
     @Test

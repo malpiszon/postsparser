@@ -2,6 +2,7 @@ package net.malpiszon.stackexchange.postsparser.handlers;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.concurrent.TimeoutException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,8 +44,15 @@ public class GlobalExceptionHandler {
 
     @ResponseStatus(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
     @ExceptionHandler(value = SAXException.class)
-    public String handleException(SAXException e) {
+    public String handleSAXException(SAXException e) {
         LOG.warn("SAX exception: " + e.getMessage());
+        return "";
+    }
+
+    @ResponseStatus(HttpStatus.REQUEST_TIMEOUT)
+    @ExceptionHandler(value = TimeoutException.class)
+    public String handleTimeoutException(TimeoutException e) {
+        LOG.info("Timeout exception: " + e.getMessage());
         return "";
     }
 }

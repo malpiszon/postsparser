@@ -12,9 +12,13 @@ import java.util.concurrent.CompletionException;
 import java.util.concurrent.TimeUnit;
 import javax.xml.parsers.SAXParser;
 
+import net.malpiszon.stackexchange.postsparser.ServiceConfig;
 import net.malpiszon.stackexchange.postsparser.parser.AnalysisResult;
 import net.malpiszon.stackexchange.postsparser.parser.PostsHandler;
 import net.malpiszon.stackexchange.postsparser.services.ParseService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.xml.sax.SAXException;
 
@@ -23,16 +27,18 @@ public class SaxParseService implements ParseService {
 
     private final SAXParser saxParser;
     private final PostsHandler handler;
+    private final ServiceConfig config;
 
-    public SaxParseService(SAXParser saxParser, PostsHandler handler) {
+    public SaxParseService(SAXParser saxParser, PostsHandler handler, ServiceConfig config) {
         this.saxParser = saxParser;
         this.handler = handler;
+        this.config = config;
     }
 
     @Override
     public CompletableFuture<AnalysisResult> parse(String fileUrl) {
         return supplyAsync(() -> executeParser(fileUrl))
-                .orTimeout(5, TimeUnit.MINUTES);
+                .orTimeout(config.getAsyncTimeout(), TimeUnit.SECONDS);
     }
 
     private AnalysisResult executeParser(String fileUrl) {

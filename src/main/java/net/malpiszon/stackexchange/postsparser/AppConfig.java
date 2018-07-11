@@ -7,6 +7,7 @@ import javax.xml.parsers.SAXParserFactory;
 import net.malpiszon.stackexchange.postsparser.parser.PostsHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.web.servlet.config.annotation.AsyncSupportConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.xml.sax.SAXException;
@@ -33,5 +34,10 @@ public class AppConfig {
                 configurer.setDefaultTimeout(300_000);
             }
         };
+    }
+
+    @Bean
+    public static PropertySourcesPlaceholderConfigurer propertyConfig() {
+        return new PropertySourcesPlaceholderConfigurer();
     }
 }

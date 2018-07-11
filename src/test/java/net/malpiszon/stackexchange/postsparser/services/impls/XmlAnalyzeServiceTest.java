@@ -7,6 +7,7 @@ import static org.mockito.Mockito.when;
 import java.time.LocalDateTime;
 import java.util.concurrent.CompletableFuture;
 
+import net.malpiszon.stackexchange.postsparser.ServiceConfig;
 import net.malpiszon.stackexchange.postsparser.dtos.AnalysisDto;
 import net.malpiszon.stackexchange.postsparser.dtos.AnalyzeRequestDto;
 import net.malpiszon.stackexchange.postsparser.parser.AnalysisResult;
@@ -43,7 +44,8 @@ public class XmlAnalyzeServiceTest {
 
     @Before
     public void setUp() throws Exception {
-        analyzeService = new XmlAnalyzeService(parseService);
+        ServiceConfig config = new ServiceConfig();
+        analyzeService = new XmlAnalyzeService(parseService, config);
 
         dto = new AnalyzeRequestDto();
         dto.setUrl(URL);
