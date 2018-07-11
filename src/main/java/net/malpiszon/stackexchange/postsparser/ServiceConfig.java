@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @EnableConfigurationProperties
-@ConfigurationProperties(prefix="service")
+@ConfigurationProperties(prefix = "service")
 public class ServiceConfig {
 
     private long asyncTimeout = 300;

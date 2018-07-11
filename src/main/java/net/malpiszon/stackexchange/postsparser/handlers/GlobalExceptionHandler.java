@@ -43,7 +43,7 @@ public class GlobalExceptionHandler {
 
     @ResponseStatus(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
     @ExceptionHandler(value = SAXException.class)
-    public String handleSAXException(SAXException e) {
+    public String handleSaxException(SAXException e) {
         LOG.warn("SAX exception: " + e.getMessage());
         return "";
     }

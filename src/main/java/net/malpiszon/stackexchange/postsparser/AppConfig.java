@@ -21,7 +21,7 @@ public class AppConfig {
     }
 
     @Bean
-    public PostsHandler PostsHandler() {
+    public PostsHandler postsHandler() {
         return new PostsHandler();
     }
 

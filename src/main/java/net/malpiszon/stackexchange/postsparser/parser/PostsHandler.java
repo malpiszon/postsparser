@@ -8,8 +8,8 @@ public class PostsHandler extends DefaultHandler {
     private final AnalysisResult result = new AnalysisResult();
 
     @Override
-    public void startElement(String uri, String localName, String qName, Attributes attributes) {
-        if (qName.equalsIgnoreCase("row")) {
+    public void startElement(String uri, String localName, String name, Attributes attributes) {
+        if (name.equalsIgnoreCase("row")) {
             result.parseRow(attributes);
         }
     }

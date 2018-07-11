@@ -32,17 +32,17 @@ public class SlowFileTest extends IntegrationTest {
 
     void createExpectation() {
         mockServerClient
-                .when(
-                        request()
-                                .withMethod("GET")
-                                .withPath("/Posts.xml"))
-                .respond(
-                        response()
-                                .withStatusCode(200)
-                                .withHeaders(
-                                        new Header(HttpHeaders.CONTENT_TYPE, "application/xml"))
-                                .withBody("")
-                                .withDelay(TimeUnit.SECONDS, 6)
-                );
+            .when(
+                request()
+                    .withMethod("GET")
+                    .withPath("/Posts.xml"))
+            .respond(
+                response()
+                    .withStatusCode(200)
+                    .withHeaders(
+                        new Header(HttpHeaders.CONTENT_TYPE, "application/xml"))
+                    .withBody("")
+                    .withDelay(TimeUnit.SECONDS, 6)
+            );
     }
 }

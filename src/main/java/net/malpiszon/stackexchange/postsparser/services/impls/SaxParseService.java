@@ -54,7 +54,7 @@ public class SaxParseService implements ParseService {
 
     private InputStream getInputStream(String fileUrl) throws IOException {
         var url = new URL(fileUrl);
-        var httpURLConnection = (HttpURLConnection) url.openConnection();
-        return new BufferedInputStream(httpURLConnection.getInputStream());
+        var httpUrlConnection = (HttpURLConnection) url.openConnection();
+        return new BufferedInputStream(httpUrlConnection.getInputStream());
     }
 }

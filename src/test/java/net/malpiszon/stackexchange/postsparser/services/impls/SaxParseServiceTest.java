@@ -48,7 +48,7 @@ public class SaxParseServiceTest {
     }
 
     @Test
-    public void testAnalyze_withParserThrowingSaxException_throwsSAXException() throws Exception {
+    public void testAnalyze_withParserThrowingSaxException_throwsSaxException() throws Exception {
         doThrow(new SAXException()).when(saxParser).parse(any(InputStream.class), any(PostsHandler.class));
 
         exception.expect(ExecutionException.class);
@@ -59,7 +59,7 @@ public class SaxParseServiceTest {
     }
 
     @Test
-    public void testAnalyze_withInvalidUrl_throwsMalformedURLException() throws Exception {
+    public void testAnalyze_withInvalidUrl_throwsMalformedUrlException() throws Exception {
         exception.expect(ExecutionException.class);
         exception.expectCause(Matchers.isA(MalformedURLException.class));
 

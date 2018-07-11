@@ -41,17 +41,17 @@ public class ValidFileTest extends IntegrationTest {
 
     void createExpectation() throws IOException {
         mockServerClient
-                .when(
-                        request()
-                                .withMethod("GET")
-                                .withPath("/Posts.xml"))
-                .respond(
-                        response()
-                                .withStatusCode(200)
-                                .withHeaders(
-                                        new Header(HttpHeaders.CONTENT_TYPE, "application/xml"))
-                                .withBody(Files.readAllBytes(ResourceUtils.getFile("classpath:xml/Posts.xml").toPath()))
-                                .withDelay(TimeUnit.SECONDS, 1)
-                );
+            .when(
+                request()
+                    .withMethod("GET")
+                    .withPath("/Posts.xml"))
+            .respond(
+                response()
+                    .withStatusCode(200)
+                    .withHeaders(
+                        new Header(HttpHeaders.CONTENT_TYPE, "application/xml"))
+                    .withBody(Files.readAllBytes(ResourceUtils.getFile("classpath:xml/Posts.xml").toPath()))
+                    .withDelay(TimeUnit.SECONDS, 1)
+            );
     }
 }

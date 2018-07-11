@@ -30,14 +30,14 @@ public class NonExistingFileTest extends IntegrationTest {
 
     void createExpectation() {
         mockServerClient
-                .when(
-                        request()
-                                .withMethod("GET")
-                                .withPath("/Posts.xml"))
-                .respond(
-                        response()
-                                .withStatusCode(404)
-                                .withDelay(TimeUnit.SECONDS, 1)
-                );
+            .when(
+                request()
+                    .withMethod("GET")
+                    .withPath("/Posts.xml"))
+            .respond(
+                 response()
+                     .withStatusCode(404)
+                     .withDelay(TimeUnit.SECONDS, 1)
+            );
     }
 }
