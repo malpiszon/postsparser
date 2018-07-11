@@ -5,7 +5,6 @@ import static org.mockserver.model.HttpResponse.response;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.asyncDispatch;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import net.malpiszon.stackexchange.postsparser.Application;
@@ -29,7 +28,7 @@ public class NonExistingFileTest extends IntegrationTest {
                 .andExpect(status().isNotFound());
     }
 
-    void createExpectation() throws IOException {
+    void createExpectation() {
         mockServerClient
                 .when(
                         request()

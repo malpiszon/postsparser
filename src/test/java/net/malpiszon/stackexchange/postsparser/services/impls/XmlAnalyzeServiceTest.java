@@ -2,6 +2,7 @@ package net.malpiszon.stackexchange.postsparser.services.impls;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDateTime;
@@ -43,7 +44,7 @@ public class XmlAnalyzeServiceTest {
     private ParseService parseService;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         ServiceConfig config = new ServiceConfig();
         analyzeService = new XmlAnalyzeService(parseService, config);
 
@@ -55,7 +56,7 @@ public class XmlAnalyzeServiceTest {
     }
 
     @Test
-    public void testAnalyze_withParseThrowingException_throwsSameException() throws Exception {
+    public void testAnalyze_withParseThrowingException_throwsSameException() {
         when(parseService.parse(URL)).thenThrow(new IllegalArgumentException());
 
         exception.expect(IllegalArgumentException.class);
@@ -91,8 +92,8 @@ public class XmlAnalyzeServiceTest {
         CompletableFuture<AnalysisDto> result = analyzeService.analyze(dto);
 
         assertNotNull("Expected date", result.get().getDate());
-        assertEquals("Expected first post date", null, result.get().getDetails().getFirstPost());
-        assertEquals("Expected last post date", null, result.get().getDetails().getLastPost());
+        assertNull("Expected first post date", result.get().getDetails().getFirstPost());
+        assertNull("Expected last post date", result.get().getDetails().getLastPost());
         assertEquals("Expected total posts", 0, result.get().getDetails().getTotalPosts());
         assertEquals("Expected avg score", 0, result.get().getDetails().getAvgScore(), 0.01);
     }

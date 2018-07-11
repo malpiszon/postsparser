@@ -42,7 +42,7 @@ public class SaxParseServiceTest {
     private PostsHandler postsHandler;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         ServiceConfig config = new ServiceConfig();
         parseService = new SaxParseService(saxParser, postsHandler, config);
     }

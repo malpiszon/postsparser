@@ -12,12 +12,12 @@ public class AnalysisResult {
 
     public void parseRow(Attributes attributes) {
         totalPosts++;
-        String creationDate = attributes.getValue("CreationDate");
+        var creationDate = attributes.getValue("CreationDate");
         if (firstPost == null) {
             firstPost = LocalDateTime.parse(creationDate);
         }
         lastPost = LocalDateTime.parse(creationDate);
-        String score = attributes.getValue("Score");
+        var score = attributes.getValue("Score");
         totalScore += Long.parseLong(score);
     }
 

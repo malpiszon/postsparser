@@ -16,9 +16,6 @@ import net.malpiszon.stackexchange.postsparser.ServiceConfig;
 import net.malpiszon.stackexchange.postsparser.parser.AnalysisResult;
 import net.malpiszon.stackexchange.postsparser.parser.PostsHandler;
 import net.malpiszon.stackexchange.postsparser.services.ParseService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.xml.sax.SAXException;
 
@@ -56,8 +53,8 @@ public class SaxParseService implements ParseService {
     }
 
     private InputStream getInputStream(String fileUrl) throws IOException {
-        URL url = new URL(fileUrl);
-        HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+        var url = new URL(fileUrl);
+        var httpURLConnection = (HttpURLConnection) url.openConnection();
         return new BufferedInputStream(httpURLConnection.getInputStream());
     }
 }

@@ -10,7 +10,6 @@ import net.malpiszon.stackexchange.postsparser.dtos.AnalyzeRequestDto;
 import net.malpiszon.stackexchange.postsparser.parser.AnalysisResult;
 import net.malpiszon.stackexchange.postsparser.services.AnalyzeService;
 import net.malpiszon.stackexchange.postsparser.services.ParseService;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -27,18 +26,16 @@ public class XmlAnalyzeService implements AnalyzeService {
     @Override
     public CompletableFuture<AnalysisDto> analyze(AnalyzeRequestDto analyzeRequestDto) {
         return parseService.parse(analyzeRequestDto.getUrl())
-                .thenApply(analysisResult -> prepareAnalysisDto(analysisResult))
+                .thenApply(this::prepareAnalysisDto)
                 .orTimeout(config.getAsyncTimeout(), TimeUnit.SECONDS);
     }
 
     private AnalysisDto prepareAnalysisDto(AnalysisResult result) {
-        AnalysisDto analysisDto = new AnalysisDto(prepareAnalysisDetailsDto(result));
-
-        return analysisDto;
+        return new AnalysisDto(prepareAnalysisDetailsDto(result));
     }
 
     private AnalysisDetailsDto prepareAnalysisDetailsDto(AnalysisResult result) {
-        double avgScore = 0;
+        var avgScore = 0D;
         if (result.getTotalPosts() > 0) {
             avgScore = (double) result.getTotalScore() / result.getTotalPosts();
         }

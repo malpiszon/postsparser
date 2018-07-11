@@ -18,6 +18,7 @@ public abstract class IntegrationTest {
 
     @Rule
     public MockServerRule mockServerRule = new MockServerRule(this);
+
     MockServerClient mockServerClient;
 
     @Autowired
