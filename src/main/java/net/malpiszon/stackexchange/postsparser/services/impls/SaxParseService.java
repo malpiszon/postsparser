@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
 import java.util.concurrent.TimeUnit;
 import javax.xml.parsers.SAXParser;
 
@@ -38,7 +39,7 @@ public class SaxParseService implements ParseService {
         try {
             return parseFile(fileUrl);
         } catch (SAXException | IOException e) {
-            throw new IllegalArgumentException(e);
+            throw new CompletionException(e);
         }
     }
 

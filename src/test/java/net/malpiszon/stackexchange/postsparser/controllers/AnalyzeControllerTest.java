@@ -12,8 +12,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.io.FileNotFoundException;
 import java.time.LocalDateTime;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.malpiszon.stackexchange.postsparser.dtos.AnalysisDetailsDto;
@@ -91,6 +93,21 @@ public class AnalyzeControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void testPostAnalyze_withNonExistingFileParameter_returnsNotFound() throws Exception {
+        AnalyzeRequestDto analyzeRequestDto = new AnalyzeRequestDto();
+        analyzeRequestDto.setUrl(VALID_URL);
+        String contentAsJson = mapper.writeValueAsString(analyzeRequestDto);
+
+        when(analyzeService.analyze(any(AnalyzeRequestDto.class))).thenThrow(new CompletionException(new FileNotFoundException()));
+
+        mockMvc.perform(post("/analyze")
+                .content(contentAsJson)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
     }
 
     @Test

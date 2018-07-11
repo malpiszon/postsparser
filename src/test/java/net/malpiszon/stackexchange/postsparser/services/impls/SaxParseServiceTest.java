@@ -7,10 +7,10 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
 
 import net.malpiszon.stackexchange.postsparser.parser.AnalysisResult;
 import net.malpiszon.stackexchange.postsparser.parser.PostsHandler;
@@ -47,20 +47,20 @@ public class SaxParseServiceTest {
     }
 
     @Test
-    public void testAnalyze_withParserThrowingSaxException_throwsExecutionException() throws Exception {
+    public void testAnalyze_withParserThrowingSaxException_throwsSAXException() throws Exception {
         doThrow(new SAXException()).when(saxParser).parse(any(InputStream.class), any(PostsHandler.class));
 
         exception.expect(ExecutionException.class);
-        exception.expectCause(Matchers.isA(IllegalArgumentException.class));
+        exception.expectCause(Matchers.isA(SAXException.class));
 
         CompletableFuture<AnalysisResult> result = parseService.parse(URL);
         result.get();
     }
 
     @Test
-    public void testAnalyze_withInvalidUrl_throwsExecutionException() throws Exception {
+    public void testAnalyze_withInvalidUrl_throwsMalformedURLException() throws Exception {
         exception.expect(ExecutionException.class);
-        exception.expectCause(Matchers.isA(IllegalArgumentException.class));
+        exception.expectCause(Matchers.isA(MalformedURLException.class));
 
         CompletableFuture<AnalysisResult> result = parseService.parse("h");
         result.get();
