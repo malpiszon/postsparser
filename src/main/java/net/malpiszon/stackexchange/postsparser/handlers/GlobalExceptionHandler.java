@@ -22,36 +22,31 @@ public class GlobalExceptionHandler {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(value = HttpMessageNotReadableException.class)
-    public String handleHttpMessageNotReadableException(HttpMessageNotReadableException e) {
+    public void handleHttpMessageNotReadableException(HttpMessageNotReadableException e) {
         LOG.info("Validation exception: " + e.getMessage());
-        return "";
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
-    public String handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+    public void handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
         LOG.info("Validation exception: " + e.getMessage());
-        return "";
     }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(value = IOException.class)
-    public String handleFileNotFoundException(IOException e) {
+    public void handleFileNotFoundException(IOException e) {
         LOG.info("File passed not exists: " + e.getMessage());
-        return "";
     }
 
     @ResponseStatus(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
     @ExceptionHandler(value = SAXException.class)
-    public String handleSaxException(SAXException e) {
+    public void handleSaxException(SAXException e) {
         LOG.warn("SAX exception: " + e.getMessage());
-        return "";
     }
 
     @ResponseStatus(HttpStatus.REQUEST_TIMEOUT)
     @ExceptionHandler(value = TimeoutException.class)
-    public String handleTimeoutException(TimeoutException e) {
+    public void handleTimeoutException(TimeoutException e) {
         LOG.info("Timeout exception: " + e.getMessage());
-        return "";
     }
 }
