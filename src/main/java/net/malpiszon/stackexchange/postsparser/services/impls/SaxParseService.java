@@ -10,7 +10,8 @@ import java.net.URL;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 import java.util.concurrent.TimeUnit;
-import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParserFactory;
 
 import net.malpiszon.stackexchange.postsparser.ServiceConfig;
 import net.malpiszon.stackexchange.postsparser.parser.AnalysisResult;
@@ -22,13 +23,14 @@ import org.xml.sax.SAXException;
 @Service
 public class SaxParseService implements ParseService {
 
-    private final SAXParser saxParser;
-    private final PostsHandler handler;
+    private final SAXParserFactory saxParserFactory;
+    private final PostsHandler.PostsHandlerFactory handlerFactory;
     private final ServiceConfig config;
 
-    public SaxParseService(SAXParser saxParser, PostsHandler handler, ServiceConfig config) {
-        this.saxParser = saxParser;
-        this.handler = handler;
+    public SaxParseService(SAXParserFactory saxParserFactory, PostsHandler.PostsHandlerFactory handlerFactory,
+                           ServiceConfig config) {
+        this.saxParserFactory = saxParserFactory;
+        this.handlerFactory = handlerFactory;
         this.config = config;
     }
 
@@ -41,13 +43,14 @@ public class SaxParseService implements ParseService {
     private AnalysisResult executeParser(String fileUrl) {
         try {
             return parseFile(fileUrl);
-        } catch (SAXException | IOException e) {
+        } catch (SAXException | IOException | ParserConfigurationException e) {
             throw new CompletionException(e);
         }
     }
 
-    private AnalysisResult parseFile(String fileUrl) throws SAXException, IOException {
-        saxParser.parse(getInputStream(fileUrl), handler);
+    private AnalysisResult parseFile(String fileUrl) throws SAXException, IOException, ParserConfigurationException {
+        PostsHandler handler = handlerFactory.createPostsHandler();
+        saxParserFactory.newSAXParser().parse(getInputStream(fileUrl), handler);
 
         return handler.getAnalysisResult();
     }

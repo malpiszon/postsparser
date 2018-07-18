@@ -11,6 +11,7 @@ import java.net.MalformedURLException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 
 import net.malpiszon.stackexchange.postsparser.ServiceConfig;
 import net.malpiszon.stackexchange.postsparser.parser.AnalysisResult;
@@ -22,6 +23,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.xml.sax.SAXException;
@@ -36,15 +38,23 @@ public class SaxParseServiceTest {
     private ParseService parseService;
 
     @MockBean
-    private SAXParser saxParser;
+    private SAXParserFactory saxParserFactory;
+
+    @Mock
+    SAXParser saxParser;
 
     @MockBean
-    private PostsHandler postsHandler;
+    private PostsHandler.PostsHandlerFactory postsHandlerFactory;
+
+    @Mock
+    PostsHandler postsHandler;
 
     @Before
-    public void setUp() {
+    public void setUp() throws Exception {
         ServiceConfig config = new ServiceConfig();
-        parseService = new SaxParseService(saxParser, postsHandler, config);
+        parseService = new SaxParseService(saxParserFactory, postsHandlerFactory, config);
+        when(saxParserFactory.newSAXParser()).thenReturn(saxParser);
+        when(postsHandlerFactory.createPostsHandler()).thenReturn(postsHandler);
     }
 
     @Test

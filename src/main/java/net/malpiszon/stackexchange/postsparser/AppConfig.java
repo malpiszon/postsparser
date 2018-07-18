@@ -1,7 +1,5 @@
 package net.malpiszon.stackexchange.postsparser;
 
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 import net.malpiszon.stackexchange.postsparser.parser.PostsHandler;
@@ -10,19 +8,18 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.web.servlet.config.annotation.AsyncSupportConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.xml.sax.SAXException;
 
 @Configuration
 public class AppConfig {
 
     @Bean
-    public SAXParser saxParser() throws ParserConfigurationException, SAXException {
-        return SAXParserFactory.newInstance().newSAXParser();
+    public SAXParserFactory saxParserFactory() {
+        return SAXParserFactory.newInstance();
     }
 
     @Bean
-    public PostsHandler postsHandler() {
-        return new PostsHandler();
+    public PostsHandler.PostsHandlerFactory postsHandlerFactory() {
+        return new PostsHandler.PostsHandlerFactory();
     }
 
     @Bean
